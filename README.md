@@ -1,6 +1,6 @@
 # app Todo List
 
-Um aplicativo todo-list é uma ferramenta digital projetada para ajudar os usuários a organizar suas tarefas e compromissos diários de maneira simples e eficiente. Ele permite que os usuários criem listas de afazeres, adicionem tarefas, definam prazos, prioridades e façam o acompanhamento do progresso.
+Esse app todo-list é uma ferramenta projetada para ajudar os usuários a organizar suas tarefas e compromissos diários de maneira simples e eficiente. Ele permite que os usuários criem listas de afazeres, adicionem tarefas e façam o acompanhamento do progresso.
 
 ## Passos até buildar
 - Criar layout :white_check_mark:

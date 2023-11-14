@@ -19,6 +19,8 @@ class _TodoListPageState extends State<TodoListPage> {
   Todo? deletedTodo;
   int? deletedTodoPos;
 
+  String? errorText;
+
   @override
   void initState() {
     super.initState();
@@ -51,11 +53,16 @@ class _TodoListPageState extends State<TodoListPage> {
                     child: TextField(
                       controller: todocontroller,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        labelText: 'Adiciona Tarefa, Corno',
-                        hintText: 'Ex.:  Cagar em casa',
-                      ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          labelText: 'Adiciona Tarefa, Corno',
+                          hintText: 'Ex.:  Cagar em casa',
+                          errorText: errorText,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xff00d7f3), width: 2),
+                          ),
+                          labelStyle: TextStyle(color: Color(0xff00d7f3))),
                     ),
                   ),
                   SizedBox(
@@ -64,12 +71,21 @@ class _TodoListPageState extends State<TodoListPage> {
                   ElevatedButton(
                     onPressed: () {
                       String text = todocontroller.text;
+
+                      if (text.isEmpty) {
+                        setState(() {
+                          errorText = 'Preenche a tarefa, fdp';
+                        });
+                        return;
+                      }
+
                       setState(() {
                         Todo newTodo = Todo(
                           title: text,
                           dateTime: DateTime.now(),
                         );
                         todos.add(newTodo);
+                        errorText = null;
                       });
                       todocontroller.clear();
                       todoRepository.saveTodoList(todos);
@@ -146,6 +162,7 @@ class _TodoListPageState extends State<TodoListPage> {
     setState(() {
       todos.remove(todo);
     });
+    todoRepository.saveTodoList(todos);
 
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -161,6 +178,7 @@ class _TodoListPageState extends State<TodoListPage> {
             setState(() {
               todos.insert(deletedTodoPos!, deletedTodo!);
             });
+            todoRepository.saveTodoList(todos);
           }),
     ));
   }
@@ -170,6 +188,7 @@ class _TodoListPageState extends State<TodoListPage> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Todas a(s) ${todos.length} tarefas foram apagadas')));
     todos.clear();
+    todoRepository.saveTodoList(todos);
   }
 
   void deleteYorN(context) {
